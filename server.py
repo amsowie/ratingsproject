@@ -46,14 +46,49 @@ def user_verify():
 
     email = request.args.get('email')
     pword = request.args.get('pword')
+    button = request.args.get('submit')
 
     user = User.query.filter(User.email == email).first()
-    if user:
-        if user.password == pword:
-            return redirect('/users/<user.user_id>')
-    else:
-        flash("email or password not found or incorrect")
+
+    if user and not (user.password == pword):
+        flash("A user with that email exists. Please login or choose a different email.")
         return redirect('/users/user-login')
+    elif user:
+        session['userid'] = user.user_id
+        return redirect('/users/' + str(user.user_id))
+
+    # not user
+    if button == "Register":
+        # add user to db
+        user = User(email=email, password=pword)
+        db.session.add(user)
+        db.session.commit()
+        session['userid'] = user.user_id
+        return redirect('/users/' + str(user.user_id))
+    else:
+        flash("That email doesn't exist. Please register or choose a different email.")
+        return redirect('/users/user-login')
+
+
+@app.route('/users/<user_id>')
+def user_page(user_id):
+    """Display users page"""
+
+    flash("Logged In! Yay!")
+    user = User.query.filter(User.user_id == session['userid']).one()
+    return render_template('user-page.html', user=user)
+
+@app.route('/users/log-out')
+def log_out():
+    """Log user out"""
+
+    del session['userid']
+
+    flash("Logged out.")
+    return redirect('/')
+
+
+
 
 
 

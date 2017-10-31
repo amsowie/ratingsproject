@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}{{ user.email }}{% endblock %}
+{% block bodytitle %}<h1>Hello, {{ user.email }}!</h1>{% endblock %}
+{% block bodycontent %}
+  <h2>Your profile:</h2>
+  <p>Age: {{ user.age }}</p>
+  <p>Zipcode: {{ user.zipcode }}</p>
+  <p>List of movies: {{ user.ratings[0].movie.title }}</p>
+ 
+
+
+
+{% endblock %}

@@ -11,6 +11,11 @@
     {% endfor %}
   </ul>
   <hr>
+  {% if 'userid' in session %}
+    <form id="form-logout" method=GET action="/users/log-out">
+      <button type="submit" id="logout">Log Out</button>
+    </form>
+  {% endif %}
   {% block bodycontent %}{% endblock %}
 </body>
 </html>
