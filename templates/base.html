@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %} | Judgemental Eye</title>
+</head>
+<body>
+  {% block bodytitle %}{% endblock %}
+  <ul>
+    {% for msg in get_flashed_messages() %}
+      <li>{{ msg }}</li>
+    {% endfor %}
+  </ul>
+  <hr>
+  {% block bodycontent %}{% endblock %}
+</body>
+</html>

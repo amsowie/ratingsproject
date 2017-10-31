@@ -2,16 +2,16 @@
 
 from jinja2 import StrictUndefined
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db
+from model import connect_to_db, db, User, Rating, Movie
 
 
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+app.secret_key = "ILoveMovies"
 
 # Normally, if you use an undefined variable in Jinja2, it fails
 # silently. This is horrible. Fix this so that, instead, it raises an
@@ -21,9 +21,40 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def index():
-    """Homepage."""
-    a = jsonify([1,3])
-    return a
+    """Index."""
+
+    return render_template("index.html")
+
+
+@app.route('/users')
+def user_list():
+    """ Show list of users."""
+
+    users = User.query.all()
+    return render_template('user-list.html', users=users)
+
+
+@app.route('/users/user-login')
+def user_form():
+    """ Show login/create form to user."""
+
+    return render_template('user-login.html')
+
+
+@app.route('/users/user-verify')
+def user_verify():
+
+    email = request.args.get('email')
+    pword = request.args.get('pword')
+
+    user = User.query.filter(User.email == email).first()
+    if user:
+        if user.password == pword:
+            return redirect('/users/<user.user_id>')
+    else:
+        flash("email or password not found or incorrect")
+        return redirect('/users/user-login')
+
 
 
 if __name__ == "__main__":
@@ -38,5 +69,5 @@ if __name__ == "__main__":
     DebugToolbarExtension(app)
 
 
-    
+
     app.run(port=5000, host='0.0.0.0')

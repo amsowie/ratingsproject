@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}User Login{% endblock %}
+{% block bodytitle %}<h1>User Login</h1>{% endblock %}
+{% block bodycontent %}
+  <h2>Sign In or Create an Account</h2>
+  <form id="form-login" method=GET action="/users/user-verify">
+    <label for="email">Email:</label>
+    <input id="email" type="text" name="email" placeholder="name@domain.com" />
+    <label for="pword">Password</label>
+    <input id="pword" type="password" name="pword" />
+    <input id="submit" type="submit" value="Submit" />
+  </form>
+
+
+{% endblock %}
