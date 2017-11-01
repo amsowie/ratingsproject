@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}{{ movie.title }}{% endblock %}
+{% block bodytitle %}<h1>Movie Details</h1>{% endblock %}
+{% block bodycontent %}
+  <h2>Title: {{ movie.title }} | Average Score: {{ rating }}</h2>
+  <p>Year released: {{ movie.released_at }}</p>
+  {% if movie.imdb_url %}
+    <p><a href="{{ movie.imbd_url }}">Go to IMDB!</a></p>
+  {% endif %}
+{% endblock %}

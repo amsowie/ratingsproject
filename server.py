@@ -5,7 +5,10 @@ from jinja2 import StrictUndefined
 from flask import Flask, jsonify, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
+from sqlalchemy.sql import func
+
 from model import connect_to_db, db, User, Rating, Movie
+
 
 
 app = Flask(__name__)
@@ -87,10 +90,21 @@ def log_out():
     flash("Logged out.")
     return redirect('/')
 
+@app.route('/movies')
+def movie_list():
 
+    movies = Movie.query.order_by(Movie.title).all()
+    return render_template('movie-list.html', movies=movies)
 
+@app.route('/movies/<movie_id>')
+def movie_details(movie_id):
+    """ Display details from individual movie"""
 
-
+    movie = Movie.query.filter(Movie.movie_id == movie_id).first()
+    avg_rating = db.session.query(func.avg(Rating.score)).filter(
+                                Rating.movie_id == movie.movie_id).all()
+    return render_template('movie-page.html', movie=movie,
+                                              rating=avg_rating)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

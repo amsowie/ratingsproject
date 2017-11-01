@@ -5,9 +5,13 @@
   <h2>Your profile:</h2>
   <p>Age: {{ user.age }}</p>
   <p>Zipcode: {{ user.zipcode }}</p>
-  <p>List of movies: {{ user.ratings[0].movie.title }}</p>
- 
-
-
+  
+  <p>List of movies:</p> 
+  <ul>
+  {% for rating in user.ratings %}
+    <li>Title: {{ rating.movie.title }} | Score: {{ rating.score }}</li>
+   
+  {% endfor %}
+  </ul>
 
 {% endblock %}
