@@ -81,6 +81,7 @@ def user_page(user_id):
     user = User.query.filter(User.user_id == session['userid']).one()
     return render_template('user-page.html', user=user)
 
+
 @app.route('/users/log-out')
 def log_out():
     """Log user out"""
@@ -90,11 +91,13 @@ def log_out():
     flash("Logged out.")
     return redirect('/')
 
+
 @app.route('/movies')
 def movie_list():
 
     movies = Movie.query.order_by(Movie.title).all()
     return render_template('movie-list.html', movies=movies)
+
 
 @app.route('/movies/<movie_id>')
 def movie_details(movie_id):
@@ -104,8 +107,25 @@ def movie_details(movie_id):
     avg_rating = db.session.query(func.avg(Rating.score)).filter(
                                 Rating.movie_id == movie.movie_id).one()
     avg_rating = '{:.2f}'.format(avg_rating[0])
+    if session.get('userid'):
+        userid = session.get('userid')
+        u_rating = (db.session.query(Rating.score)
+                              .filter(Rating.movie_id == movie_id,
+                                      Rating.user_id == userid).first()
+                   ) # end query
     return render_template('movie-page.html', movie=movie,
-                                              rating=avg_rating)
+                                              rating=avg_rating,
+                                              u_rating=u_rating)
+
+
+@app.route('/movies/rating', methods=["GET"])
+def rate_movie():
+   movie_id = request.args.get("movie_id")
+   user_id = request.args.get("user_id")
+   score = request.args.get("ratenum")
+
+   rating = db.session.get()
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
