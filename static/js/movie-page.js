@@ -2,8 +2,8 @@
 
 $(document).ready(function() {
   console.log("doc ready");
-  $("#rating_num").on('keyup', function() {
-    let ratingInput = $("#rating_num").val();
+  $("#score").on('keyup', function() {
+    let ratingInput = $("#score").val();
     ratingInput = Number(ratingInput);
     if (( isNaN(ratingInput) ) || ( ratingInput < 1 ) || ( ratingInput > 5 )) {
       $("#rating_num_text").html("Digit 1 to 5, please.");

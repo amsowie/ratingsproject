@@ -118,13 +118,24 @@ def movie_details(movie_id):
                                               u_rating=u_rating)
 
 
-@app.route('/movies/rating', methods=["GET"])
+@app.route('/movies/rating', methods=["POST"])
 def rate_movie():
-   movie_id = request.args.get("movie_id")
-   user_id = request.args.get("user_id")
-   score = request.args.get("ratenum")
+    movie_id = request.form.get("movie_id")
+    user_id = request.form.get("user_id")
+    score = request.form.get("score")
 
-   rating = db.session.get()
+    u_rating = Rating.query.filter(Rating.movie_id == movie_id,
+                                   Rating.user_id == user_id).first()
+    if u_rating:
+        u_rating.score = score
+    else:
+        new_rating = Rating(movie_id=movie_id, user_id=user_id, score=score)
+        db.session.add(new_rating)
+
+    db.session.commit()
+    # success = 'yay'
+    # return 'yay'
+
 
 
 if __name__ == "__main__":
