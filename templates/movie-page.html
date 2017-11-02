@@ -3,8 +3,26 @@
 {% block bodytitle %}<h1>Movie Details</h1>{% endblock %}
 {% block bodycontent %}
   <h2>Title: {{ movie.title }} | Average Score: {{ rating }}</h2>
-  <p>Year released: {{ movie.released_at }}</p>
-  {% if movie.imdb_url %}
-    <p><a href="{{ movie.imbd_url }}">Go to IMDB!</a></p>
-  {% endif %}
+  <p>Year released: {{ movie.released_at.year }}</p>
+  <p><a href="{{ movie.imdb_url }}">Go to IMDB!</a></p>
+  <form id="form_rate_movie" method=POST action="/movies/rating">
+    <label for="rating_num">Rate this movie: (pick a number 1-5) </label>
+    <input type="text" id="rating_num" name="ratenum" required />
+    <span id="rating_num_text" ></span>
+    <input type="submit" id="submit_rating" />
+  </form>
+  <script>
+    document.querySelector("#rating_num").addEventListener('keyup', function() {
+      let ratingInput = document.querySelector("#rating_num").value;
+      ratingInput = Number(ratingInput);
+      if (( isNaN(ratingInput) ) || ( ratingInput < 1 ) || ( ratingInput > 5 )) {
+        document.querySelector("#rating_num_text").innerHTML = "Digit 1 to 5, please.";
+      } else {
+        document.querySelector("#rating_num_text").innerHTML = "";
+      } // end if
+    } //end func
+    );
+     
+  </script>
+
 {% endblock %}

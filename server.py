@@ -102,7 +102,8 @@ def movie_details(movie_id):
 
     movie = Movie.query.filter(Movie.movie_id == movie_id).first()
     avg_rating = db.session.query(func.avg(Rating.score)).filter(
-                                Rating.movie_id == movie.movie_id).all()
+                                Rating.movie_id == movie.movie_id).one()
+    avg_rating = '{:.2f}'.format(avg_rating[0])
     return render_template('movie-page.html', movie=movie,
                                               rating=avg_rating)
 
