@@ -37,11 +37,12 @@ def user_list():
     return render_template('user-list.html', users=users)
 
 
-@app.route('/users/user-login')
+@app.route('/users/user-login', methods=['GET'])
 def user_form():
     """ Show login/create form to user."""
 
-    return render_template('user-login.html')
+    url_redir = request.args.get('url-redir')
+    return render_template('user-login.html', url_redir=url_redir)
 
 
 @app.route('/users/user-verify')
@@ -50,6 +51,7 @@ def user_verify():
     email = request.args.get('email')
     pword = request.args.get('pword')
     button = request.args.get('submit')
+    url_redir = request.args.get('url-redir')
 
     user = User.query.filter(User.email == email).first()
 
@@ -58,7 +60,10 @@ def user_verify():
         return redirect('/users/user-login')
     elif user:
         session['userid'] = user.user_id
-        return redirect('/users/' + str(user.user_id))
+        if url_redir is not None:
+            return redirect(url_redir)
+        else:
+            return redirect('/users/' + str(user.user_id))
 
     # not user
     if button == "Register":

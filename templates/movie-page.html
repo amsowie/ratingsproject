@@ -24,7 +24,11 @@
 
   {% else %}
 
-    <p><a href="/users/user-login" title="Log In">Log in</a> to rate this movie.</p>
+    <form id="form-movie-login" action="/users/user-login" method=GET>
+      <input type="hidden" id="url-redir" name="url-redir" value="/movies/{{movie.movie_id}}" />
+      <input type="submit" id="submit-movie-login" value="Log In" />
+    </form>
+    <p>Log in to rate this movie.</p>
 
   {% endif %}
   
