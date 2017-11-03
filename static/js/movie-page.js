@@ -1,7 +1,7 @@
 "use strict";
 
 $(document).ready(function() {
-  console.log("doc ready");
+
   $("#score").on('keyup', function() {
     let ratingInput = $("#score").val();
     ratingInput = Number(ratingInput);
@@ -13,7 +13,26 @@ $(document).ready(function() {
       $("#submit_rating").removeAttr("disabled");
 
     } // end if
-  } //end func
+  } //end func score eval
   );
-} // end func
+
+  $("#form_rate_movie").on('submit', function(evt) {
+    evt.preventDefault();
+
+    let formInputs = {
+      "user_id": $('#user_id').val(),
+      "movie_id": $('#movie_id').val(),
+      "score": $('#score').val()
+    };
+
+    $.post('/movies/rating', formInputs, function(results) {
+      $('#urating').text('You rated this movie a ' + results.message);
+      $('#score').val('');
+    } // end func(results)
+    );
+
+  } // end sendRating
+  );
+
+} // end func doc.ready
 );

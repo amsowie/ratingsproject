@@ -8,43 +8,25 @@
   <p>Year released: {{ movie.released_at.year }}</p>
   <p><a href="{{ movie.imdb_url }}">Go to IMDB!</a></p>
   {% if 'userid' in session %}
+
     {% if u_rating != None %}
-      <p>You rated this movie a {{ u_rating[0] }}.</p>
+      <p id="urating">You rated this movie a {{ u_rating[0] }}.</p>
     {% endif %}
-    <form id="form_rate_movie" method=POST action="/movies/rating">
+
+    <form id="form_rate_movie">
       <label for="score">Rate this movie: (pick a number 1-5) </label>
-      <input type="text" id="score" name="score" required />
+      <input type="text" id="score" name="score" size="1" required />
       <input type="hidden" id="movie_id" name="movie_id" value="{{movie.movie_id}}"/>
       <input type="hidden" id="user_id" name="user_id" value="{{ session['userid'] }}"/>
       <span id="rating_num_text" ></span>
       <input type="submit" id="submit_rating" disabled />
     </form>
+
   {% else %}
+
     <p><a href="/users/user-login" title="Log In">Log in</a> to rate this movie.</p>
+
   {% endif %}
-  
-  <script>
-    function sendRating(evt) {
-      evt.preventDefault();
-
-      let formInputs = {
-        "user_id": $('#user_id').val(),
-        "movie_id": $('#movie_id').val(),
-        "score": $('#score').val()
-      };
-
-      $.post('/movies/rating', formInputs, ratingSuccessful);
-
-    } // end sendRating
-
-    function ratingSuccessful(results) {
-      debugger;
-      console.log("i worked until here");
-    }
-
-    $("#submit_rating").on('submit', sendRating);
-    
-  </script>
   
 
 {% endblock %}

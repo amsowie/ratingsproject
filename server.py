@@ -107,6 +107,8 @@ def movie_details(movie_id):
     avg_rating = db.session.query(func.avg(Rating.score)).filter(
                                 Rating.movie_id == movie.movie_id).one()
     avg_rating = '{:.2f}'.format(avg_rating[0])
+    u_rating = ''
+
     if session.get('userid'):
         userid = session.get('userid')
         u_rating = (db.session.query(Rating.score)
@@ -133,8 +135,8 @@ def rate_movie():
         db.session.add(new_rating)
 
     db.session.commit()
-    # success = 'yay'
-    # return 'yay'
+    # import pdb; pdb.set_trace()
+    return jsonify(message=score)
 
 
 
