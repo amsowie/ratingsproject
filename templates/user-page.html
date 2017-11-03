@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
+{% block page_specific_script_src %}src="/static/js/user-page.js"{% endblock %}
 {% block title %}{{ user.email }}{% endblock %}
 {% block bodytitle %}<h1>Hello, {{ user.email }}!</h1>{% endblock %}
 {% block bodycontent %}
   <h2>Your profile:</h2>
-  <p>Age: {{ user.age }}</p>
-  <p>Zipcode: {{ user.zipcode }}</p>
+  <p id="user-age">Age: {{ user.age }}</p>
+  <button type="button" name="update-age" id="update-age" >Update Age</button>
+  
+  <p id="user-zip">Zipcode: {{ user.zipcode }}</p>
+  <button type="button" name="update-zip" id="update-zip" >Update Zipcode</button>
+  
   
   <p>List of movies:</p> 
   <ul>

@@ -86,6 +86,21 @@ def user_page(user_id):
     user = User.query.filter(User.user_id == session['userid']).one()
     return render_template('user-page.html', user=user)
 
+@app.route('/users/info', methods=['POST'])
+def update_user_info():
+    """Update user info age and zipcode"""
+
+    info_type = request.form.get("type")
+    new_val = request.form.get(info_type)
+
+    user = User.query.filter(User.user_id == session['userid']).first()
+
+    user.info_type = new_val
+    # db.session.add(user)
+    db.session.commit()
+
+    return jsonify(message=new_val)
+
 
 @app.route('/users/log-out')
 def log_out():
@@ -142,6 +157,7 @@ def rate_movie():
     db.session.commit()
     # import pdb; pdb.set_trace()
     return jsonify(message=score)
+
 
 
 
